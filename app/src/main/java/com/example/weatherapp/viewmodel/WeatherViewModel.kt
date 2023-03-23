@@ -24,7 +24,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         fetchMinutelyForecast()
     }
 
-    private fun fetchCurrentWeather() {
+     private fun fetchCurrentWeather() {
         viewModelScope.launch {
             repository.fetchCurrentWeather("Kuala Lumpur", "Malaysia", "0b326fe2adf846caaf50076157562425")
             val weather = repository.getCurrentWeather(1)
@@ -32,7 +32,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         }
     }
 
-    private fun fetchMinutelyForecast() {
+     private fun fetchMinutelyForecast() {
         viewModelScope.launch {
             repository.fetchMinutelyForecast("Kuala Lumpur", "Malaysia", "0b326fe2adf846caaf50076157562425")
             val forecasts = repository.getAllMinutelyForecasts()

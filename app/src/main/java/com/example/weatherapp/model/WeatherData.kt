@@ -9,3 +9,4 @@ data class WeatherData(
     val state_code: String,
     val timezone: String
 )
+

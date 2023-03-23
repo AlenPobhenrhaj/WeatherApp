@@ -29,7 +29,7 @@ class WeatherRepository(
             id = 0, // Replace with an appropriate ID if needed.
             name = forecastResponse.city_name,
             temperature = forecastResponse.data.first().temp,
-            humidity = forecastResponse.data,
+            humidity = forecastResponse.data.first().rh,
             pressure = forecastResponse.data.first().pres.toInt(),
             description = forecastResponse.data.first().weather.description,
             icon = forecastResponse.data.first().weather.icon,

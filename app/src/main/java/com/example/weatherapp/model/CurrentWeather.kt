@@ -12,7 +12,7 @@ data class CurrentWeather(
     val id: Int,
     val name: String,
     val temperature: Double,
-    val humidity: List<Data>,
+    val humidity: Int, // Changed type from List<Data> to Int
     val pressure: Int,
     val description: String,
     val icon: String,
