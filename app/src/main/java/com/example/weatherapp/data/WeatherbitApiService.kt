@@ -19,5 +19,14 @@ interface WeatherbitApiService {
         @Query("country") country: String,
         @Query("key") apiKey: String
     ): WeatherData
+
+    @GET("forecast/daily")
+    suspend fun getDailyForecast(
+        @Query("city") city: String,
+        @Query("country") country: String,
+        @Query("key") apiKey: String,
+        @Query("days") days: Int = 5
+    ): WeatherData
+
 }
 

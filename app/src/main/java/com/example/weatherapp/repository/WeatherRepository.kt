@@ -2,16 +2,18 @@ package com.example.weatherapp.repository
 
 import com.example.weatherapp.data.WeatherbitApiService
 import com.example.weatherapp.database.CurrentWeatherDao
+import com.example.weatherapp.database.DailyForecastDao
 import com.example.weatherapp.database.MinutelyForecastDao
 import com.example.weatherapp.model.*
 import java.util.*
 
 class WeatherRepository(
     private val apiService: WeatherbitApiService,
-    private val currentWeatherDao: CurrentWeatherDao,
-    private val minutelyForecastDao: MinutelyForecastDao
+   /* private val currentWeatherDao: CurrentWeatherDao,
+    private val minutelyForecastDao: MinutelyForecastDao,*/
+    private val dailyForecastDao: DailyForecastDao
 ) {
-    suspend fun fetchCurrentWeather(city: String, country: String, apiKey: String) {
+/*    suspend fun fetchCurrentWeather(city: String, country: String, apiKey: String) {
         try {
             val forecastResponse = apiService.getCurrentWeather(city, country, apiKey)
             val currentWeather = convertToCurrentWeather(forecastResponse)
@@ -36,9 +38,9 @@ class WeatherRepository(
             windSpeed = forecastResponse.data.first().wind_spd,
             windDirection = forecastResponse.data.first().wind_dir
         )
-    }
+    }*/
 
-    suspend fun fetchMinutelyForecast(city: String, country: String, apiKey: String) {
+ /*   suspend fun fetchMinutelyForecast(city: String, country: String, apiKey: String) {
         try {
             val forecastResponse = apiService.getMinutelyForecast(city, country, apiKey)
             val forecastList = convertToMinutelyForecastList(forecastResponse)
@@ -46,9 +48,9 @@ class WeatherRepository(
         } catch (e: Exception) {
             // Handle exceptions, e.g., no network connection or API errors
         }
-    }
+    }*/
 
-    private fun convertToMinutelyForecastList(forecastResponse: WeatherData): List<MinutelyForecast> {
+/*    private fun convertToMinutelyForecastList(forecastResponse: WeatherData): List<MinutelyForecast> {
         return forecastResponse.data.map { data ->
             MinutelyForecast(
                 id = 0, // Replace with an appropriate ID if needed.
@@ -61,14 +63,44 @@ class WeatherRepository(
                 windDirection = data.wind_dir
             )
         }
-    }
+    }*/
 
 
-    suspend fun getCurrentWeather(id: Int): CurrentWeather? {
+  /*  suspend fun getCurrentWeather(id: Int): CurrentWeather? {
         return currentWeatherDao.getCurrentWeather(id)
     }
-
-    suspend fun getAllMinutelyForecasts(): List<MinutelyForecast> {
+*/
+  /*  suspend fun getAllMinutelyForecasts(): List<MinutelyForecast> {
         return minutelyForecastDao.getAllMinutelyForecasts()
     }
+*/
+
+    suspend fun fetchDailyForecast(city: String, country: String, apiKey: String) {
+        try {
+            val forecastResponse = apiService.getDailyForecast(city, country, apiKey)
+            val forecastList = convertToDailyForecastList(forecastResponse)
+            dailyForecastDao.insertAll(forecastList)
+        } catch (e: Exception) {
+            // Handle exceptions, e.g., no network connection or API errors
+        }
+    }
+
+    private fun convertToDailyForecastList(forecastResponse: WeatherData): List<DailyForecast> {
+        return forecastResponse.data.map { data ->
+            DailyForecast(
+                id = 0,
+                timestamp = Date(data.ts.toLong() * 1000),
+                precipitation = data.precip,
+                temperature = data.temp,
+                weatherDescription = data.weather.description,
+                timezone = forecastResponse.timezone,
+                datetime = data.datetime
+            )
+        }
+    }
+
+    suspend fun getAllDailyForecasts(): List<DailyForecast> {
+        return dailyForecastDao.getAllDailyForecasts()
+    }
+
 }
