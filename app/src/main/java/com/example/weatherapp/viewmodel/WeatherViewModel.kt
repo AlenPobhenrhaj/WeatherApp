@@ -1,5 +1,6 @@
 package com.example.weatherapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
@@ -24,13 +25,14 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
 
     fun fetchDailyForecast(timezone: String) {
         viewModelScope.launch {
-            val city = timezone
             val country = getCountryCodeForCity(timezone)
-            repository.fetchDailyForecast(city, country, "0b326fe2adf846caaf50076157562425")
-            val forecasts = repository.getAllDailyForecastsByLocation(timezone)
+            repository.fetchDailyForecast(timezone, country, "0b326fe2adf846caaf50076157562425")
+            val forecasts = repository.getAllDailyForecastsByLocationWithLogging(timezone)
+            Log.d("WeatherViewModel", "Fetched daily forecasts for $timezone: $forecasts")
             _dailyForecasts.value = forecasts
         }
     }
+
 
     private fun getCountryCodeForCity(city: String): String {
         return when (city) {

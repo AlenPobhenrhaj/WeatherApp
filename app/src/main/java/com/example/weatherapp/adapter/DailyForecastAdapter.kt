@@ -1,5 +1,6 @@
 package com.example.weatherapp.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ class DailyForecastAdapter : RecyclerView.Adapter<DailyForecastAdapter.DailyFore
     override fun getItemCount(): Int = forecasts.size
 
     fun submitList(newForecasts: List<DailyForecast>) {
+        Log.d("DailyForecastAdapter", "Submitting new forecasts: $newForecasts")
         forecasts = newForecasts
         notifyDataSetChanged()
     }
@@ -32,4 +34,6 @@ class DailyForecastAdapter : RecyclerView.Adapter<DailyForecastAdapter.DailyFore
             binding.executePendingBindings()
         }
     }
+
+
 }

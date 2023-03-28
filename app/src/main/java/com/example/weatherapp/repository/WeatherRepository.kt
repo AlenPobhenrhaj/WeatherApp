@@ -1,5 +1,6 @@
 package com.example.weatherapp.repository
 
+import android.util.Log
 import com.example.weatherapp.data.WeatherbitApiService
 import com.example.weatherapp.database.DailyForecastDao
 import com.example.weatherapp.model.*
@@ -76,6 +77,7 @@ class WeatherRepository(
     suspend fun fetchDailyForecast(city: String, country: String, apiKey: String) {
         try {
             val forecastResponse = apiService.getDailyForecast(city, country, apiKey)
+            Log.d("WeatherRepository", "Fetched daily forecast: $forecastResponse")
             val forecastList = convertToDailyForecastList(forecastResponse)
             dailyForecastDao.insertAll(forecastList)
         } catch (e: Exception) {
@@ -98,8 +100,12 @@ class WeatherRepository(
         }
     }
 
-    suspend fun getAllDailyForecastsByLocation(location: String): List<DailyForecast> {
-        return dailyForecastDao.getAllDailyForecastsByLocation(location)
+    suspend fun getAllDailyForecastsByLocation(timezone: String): List<DailyForecast> {
+        return dailyForecastDao.getAllDailyForecastsByLocation(timezone)
+    }
+
+    suspend fun getAllDailyForecastsByLocationWithLogging(timezone: String): List<DailyForecast> {
+        return dailyForecastDao.getAllDailyForecastsByLocationWithLogging(timezone)
     }
 
 }
