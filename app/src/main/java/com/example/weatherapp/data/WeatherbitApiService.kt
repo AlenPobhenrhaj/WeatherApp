@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherbitApiService {
-    @GET("current")
+/*    @GET("current")
     suspend fun getCurrentWeather(
         @Query("city") city: String,
         @Query("country") country: String,
@@ -18,7 +18,7 @@ interface WeatherbitApiService {
         @Query("city") city: String,
         @Query("country") country: String,
         @Query("key") apiKey: String
-    ): WeatherData
+    ): WeatherData*/
 
     @GET("forecast/daily")
     suspend fun getDailyForecast(

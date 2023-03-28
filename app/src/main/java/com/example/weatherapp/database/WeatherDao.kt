@@ -4,11 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.weatherapp.model.CurrentWeather
 import com.example.weatherapp.model.DailyForecast
-import com.example.weatherapp.model.MinutelyForecast
 
-@Dao
+/*@Dao
 interface CurrentWeatherDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,7 +24,7 @@ interface MinutelyForecastDao {
 
     @Query("SELECT * FROM minutely_forecast")
     suspend fun getAllMinutelyForecasts(): List<MinutelyForecast>
-}
+}*/
 
 @Dao
 interface DailyForecastDao {
@@ -35,4 +33,7 @@ interface DailyForecastDao {
 
     @Query("SELECT * FROM daily_forecast")
     suspend fun getAllDailyForecasts(): List<DailyForecast>
+
+    @Query("SELECT * FROM daily_forecast WHERE timezone = :timezone")
+    suspend fun getAllDailyForecastsByLocation(timezone: String): List<DailyForecast>
 }

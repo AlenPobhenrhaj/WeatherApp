@@ -1,9 +1,7 @@
 package com.example.weatherapp.repository
 
 import com.example.weatherapp.data.WeatherbitApiService
-import com.example.weatherapp.database.CurrentWeatherDao
 import com.example.weatherapp.database.DailyForecastDao
-import com.example.weatherapp.database.MinutelyForecastDao
 import com.example.weatherapp.model.*
 import java.util.*
 
@@ -85,6 +83,7 @@ class WeatherRepository(
         }
     }
 
+
     private fun convertToDailyForecastList(forecastResponse: WeatherData): List<DailyForecast> {
         return forecastResponse.data.map { data ->
             DailyForecast(
@@ -99,8 +98,8 @@ class WeatherRepository(
         }
     }
 
-    suspend fun getAllDailyForecasts(): List<DailyForecast> {
-        return dailyForecastDao.getAllDailyForecasts()
+    suspend fun getAllDailyForecastsByLocation(location: String): List<DailyForecast> {
+        return dailyForecastDao.getAllDailyForecastsByLocation(location)
     }
 
 }

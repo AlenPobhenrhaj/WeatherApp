@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="dailyforecast">DailyForecast:</string>
+    <string name="precipitation">Precipitation:</string>
+    <string name="timezone">Timezone:</string>
+    <string name="weather_description">Weather Description:</string>
+    <string name="temperature">Temperature:</string>
 </resources>
