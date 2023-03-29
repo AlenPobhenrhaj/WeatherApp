@@ -30,7 +30,7 @@ interface MinutelyForecastDao {
 @Dao
 interface DailyForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(dailyForecasts: List<DailyForecast>)
+    suspend fun upsertAll(dailyForecasts: List<DailyForecast>)
 
     @Query("SELECT * FROM daily_forecast")
     suspend fun getAllDailyForecasts(): List<DailyForecast>

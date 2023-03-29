@@ -2,10 +2,12 @@ package com.example.weatherapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "daily_forecast")
+
+@Entity(tableName = "daily_forecast", indices = [Index(value = ["timestamp", "timezone"], unique = true)])
 data class DailyForecast(
     @PrimaryKey(autoGenerate = true)
     val id: Long,

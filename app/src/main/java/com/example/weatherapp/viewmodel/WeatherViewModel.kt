@@ -18,18 +18,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
 
 
     init {
-        viewModelScope.launch {
-            fetchDailyForecast("Kuala Lumpur")
-
-            val city = "Kuala Lumpur"
-            val countryCode = getCountryCodeForCity(city)
-            repository.fetchDailyForecast(city, countryCode, "0b326fe2adf846caaf50076157562425")
-
-            val timezone = getCityTimezone(city)
-            val forecasts = repository.getAllDailyForecastsByTimezone(timezone)
-            Log.d("WeatherViewModel", "Fetched daily forecasts for $city: $forecasts")
-            _dailyForecasts.value = forecasts
-        }
+        fetchDailyForecast("Kuala Lumpur")
     }
 
     fun fetchDailyForecast(city: String) {

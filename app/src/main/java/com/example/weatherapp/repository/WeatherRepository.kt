@@ -16,7 +16,7 @@ class WeatherRepository(
             val forecastResponse = apiService.getDailyForecast(city, country, apiKey)
             Log.d("WeatherRepository", "Fetched daily forecast: $forecastResponse")
             val forecastList = convertToDailyForecastList(forecastResponse)
-            dailyForecastDao.insertAll(forecastList)
+            dailyForecastDao.upsertAll(forecastList)
             Log.d("WeatherRepository", "Stored daily forecasts")
         } catch (e: Exception) {
             // Handle exceptions, e.g., no network connection or API errors

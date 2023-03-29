@@ -11,9 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.weatherapp.adapter.DailyForecastAdapter
 import com.example.weatherapp.data.WeatherbitApi
 import com.example.weatherapp.database.DatabaseProvider
+import com.example.weatherapp.database.WeatherDatabase
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.viewmodel.WeatherViewModel
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: DailyForecastAdapter
+    lateinit var weatherDatabase: WeatherDatabase
 
     private val viewModel: WeatherViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -46,6 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         adapter = DailyForecastAdapter()
         binding.recyclerView.adapter = adapter
+
+        weatherDatabase = Room.databaseBuilder(
+            this,
+            WeatherDatabase::class.java, "weather_database"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         viewModel.dailyForecasts.observe(this, Observer { forecasts ->
             Log.d("MainActivity", "Observed daily forecasts: $forecasts")
