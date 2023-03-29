@@ -35,12 +35,15 @@ interface DailyForecastDao {
     @Query("SELECT * FROM daily_forecast")
     suspend fun getAllDailyForecasts(): List<DailyForecast>
 
-    @Query("SELECT * FROM daily_forecast WHERE timezone = :timezone")
+    @Query("SELECT * FROM daily_forecast WHERE timezone = :timezone ORDER BY timestamp ASC")
     suspend fun getAllDailyForecastsByLocation(timezone: String): List<DailyForecast>
 
-    suspend fun getAllDailyForecastsByLocationWithLogging(timezone: String): List<DailyForecast> {
-        val forecasts = getAllDailyForecastsByLocation(timezone)
-        Log.d("DailyForecastDao", "Fetched daily forecasts by location ($timezone): $forecasts")
+    suspend fun getAllDailyForecastsByLocationWithLogging(city: String): List<DailyForecast> {
+        val forecasts = getAllDailyForecastsByLocation(city)
+        Log.d("DailyForecastDao", "Fetched daily forecasts by location ($city): $forecasts")
         return forecasts
     }
+
+    @Query("SELECT * FROM daily_forecast WHERE timezone = :timezone ORDER BY timestamp ASC")
+    suspend fun getAllDailyForecastsByTimezone(timezone: String): List<DailyForecast>
 }

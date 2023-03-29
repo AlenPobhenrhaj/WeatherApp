@@ -16,23 +16,33 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     private val _dailyForecasts = MutableStateFlow<List<DailyForecast>>(emptyList())
     val dailyForecasts: LiveData<List<DailyForecast>> = _dailyForecasts.asLiveData()
 
- /*   private val _timezone = MutableStateFlow<String>("")
-    val timezone: LiveData<String> = _timezone.asLiveData()*/
 
     init {
-        fetchDailyForecast("Kuala Lumpur")
-    }
-
-    fun fetchDailyForecast(timezone: String) {
         viewModelScope.launch {
-            val country = getCountryCodeForCity(timezone)
-            repository.fetchDailyForecast(timezone, country, "0b326fe2adf846caaf50076157562425")
-            val forecasts = repository.getAllDailyForecastsByLocationWithLogging(timezone)
-            Log.d("WeatherViewModel", "Fetched daily forecasts for $timezone: $forecasts")
+            fetchDailyForecast("Kuala Lumpur")
+
+            val city = "Kuala Lumpur"
+            val countryCode = getCountryCodeForCity(city)
+            repository.fetchDailyForecast(city, countryCode, "0b326fe2adf846caaf50076157562425")
+
+            val timezone = getCityTimezone(city)
+            val forecasts = repository.getAllDailyForecastsByTimezone(timezone)
+            Log.d("WeatherViewModel", "Fetched daily forecasts for $city: $forecasts")
             _dailyForecasts.value = forecasts
         }
     }
 
+    fun fetchDailyForecast(city: String) {
+        viewModelScope.launch {
+            val country = getCountryCodeForCity(city)
+            repository.fetchDailyForecast(city, country, "0b326fe2adf846caaf50076157562425")
+
+            val timezone = getCityTimezone(city)
+            val forecasts = repository.getAllDailyForecastsByTimezone(timezone)
+            Log.d("WeatherViewModel", "Fetched daily forecasts for $city: $forecasts")
+            _dailyForecasts.value = forecasts
+        }
+    }
 
     private fun getCountryCodeForCity(city: String): String {
         return when (city) {
@@ -41,6 +51,16 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             "London" -> "GB"
             "Tokyo" -> "JP"
             else -> "MY" // Default to Malaysia
+        }
+    }
+
+    private fun getCityTimezone(city: String): String {
+        return when (city) {
+            "Kuala Lumpur" -> "Asia/Kuala_Lumpur"
+            "New York" -> "America/New_York"
+            "London" -> "Europe/London"
+            "Tokyo" -> "Asia/Tokyo"
+            else -> "Asia/Kuala_Lumpur" // Default to Kuala Lumpur timezone
         }
     }
 }
